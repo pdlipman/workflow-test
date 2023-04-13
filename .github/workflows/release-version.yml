@@ -57,6 +57,9 @@ jobs:
         run: yarn version --minor 
         
       - run: |   
+          NEW_VERSION=${{ steps.version-step.outputs.version }}
+          SOURCE=$(git branch --show-current)
+          NEW_BRANCH="PDL-v${NEW_VERSION}"
           git push -u origin "${NEW_BRANCH}"
           gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
 
