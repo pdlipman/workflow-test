@@ -11,9 +11,6 @@ on:
           - Minor
           - Patch
         default: 'Minor'
-      version:
-        description: 'New Version number'
-        required: true
 permissions:
   contents: write
   pull-requests: write
