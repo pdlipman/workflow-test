@@ -28,15 +28,19 @@ jobs:
       - uses: actions/setup-node@v3
       
       - run: gh config set prompt disabled
+      - if: github.event.inputs.version-type == 'Major'
+        run: yarn version --major --no-git-tag-version
       - if: github.event.inputs.version-type == 'Minor'
         run: yarn version --minor --no-git-tag-version
+      - if: github.event.inputs.version-type == 'Patch'
+        run: yarn version --patch --no-git-tag-version
       - name: Extract version
         id: version-step
         uses: michmich112/extract-version@main
         with:
           # specify here the path to your version file (e.g. package.json, pom.xml...)
           version-file: "./package.json"
-          schema: major.minor.build        
+          schema: major.minor.patch        
       - run: | 
           git checkout -- package.json
           echo phil test begin
@@ -53,8 +57,12 @@ jobs:
           git config --global user.email 'philip.lipman@gmail.com'
           git checkout -b ${NEW_BRANCH}
        
+      - if: github.event.inputs.version-type == 'Major'        
+        run: yarn version --major
       - if: github.event.inputs.version-type == 'Minor'        
         run: yarn version --minor
+      - if: github.event.inputs.version-type == 'Patch'        
+        run: yarn version --patch
         
       - run: |   
           NEW_VERSION=${{ steps.version-step.outputs.version }}
