@@ -37,6 +37,7 @@ jobs:
           version-file: "./package.json"
           schema: major.minor.build        
       - run: | 
+          git checkout -- package.json
           echo phil test begin
           echo ${{ steps.version-step.outputs.version }}
           echo phil test end
@@ -51,9 +52,11 @@ jobs:
           git config --global user.name 'Philip Lipman'
           git config --global user.email 'philip.lipman@gmail.com'
           git checkout -b ${NEW_BRANCH}
-          
-          yarn version --new-version ${NEW_VERSION}
+       
+      - if: github.event.inputs.version-type == 'Minor'
+        run: yarn version --minor 
         
+      - run: |   
           git push -u origin "${NEW_BRANCH}"
           gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
 
