@@ -17,6 +17,7 @@ permissions:
   packages: write
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -42,7 +43,6 @@ jobs:
           echo ${{ steps.version-step.outputs.version }}
           echo phil test end
           NEW_VERSION=${{ steps.version-step.outputs.version }}
-          SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           
           yarn || exit 1
@@ -56,8 +56,7 @@ jobs:
       - if: github.event.inputs.version-type == 'Minor'        
         run: |   
           NEW_VERSION=${{ steps.version-step.outputs.version }}
-          SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           git push -u origin "${NEW_BRANCH}"
-          gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
+          gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${BRANCH_NAME}" 
 
