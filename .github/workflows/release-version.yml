@@ -9,7 +9,7 @@ permissions:
   contents: write
   pull-requests: write
   packages: write
-env
+env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   release:
@@ -24,17 +24,5 @@ jobs:
       - run: gh config set prompt disabled
       - run: |
         SOURCE=$(git branch --show-current)
-        export NEW_VERSION="${{ github.events.inputs.version }}"
-        NEW_BRANCH="PDL-v$(NEW_VERSION)"
-        
-        yarn || exit 1
-        yarn build || exit 1
-        
-        npm set //npm.pkg.github.com/:_authToken $GITHUB_TOKEN
-        git config --global user.name 'Philip Lipman'
-        git config --global user.email 'philip.lipman@gmail.com'
-        git checkout -b $NEW_BRANCH
-        yarn package
-        
-        git push -u origin "${NEW_BRANCH}"
-        gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
+
+
