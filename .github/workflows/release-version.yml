@@ -2,6 +2,15 @@ name: release-version
 on: 
   workflow_dispatch:
     inputs:
+      version-type:
+        type: choice
+        description: 'Update version'
+        required: true
+        options:
+          - Major
+          - Minor
+          - Patch
+        default: '- Minor'
       version:
         description: 'New Version number'
         required: true
