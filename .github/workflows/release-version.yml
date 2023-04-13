@@ -25,20 +25,20 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
+      
+      - run: gh config set prompt disabled
+      - if: github.event.inputs.version-type == 'Minor'
+        run: yarn version --minor --no-git-tag-version
       - name: Extract version
         id: version-step
         uses: michmich112/extract-version@main
         with:
           # specify here the path to your version file (e.g. package.json, pom.xml...)
           version-file: "./package.json"
-          schema: major.minor.build
-      - run: gh config set prompt disabled
-      - if: github.event.inputs.version-type == 'Minor'
-        run: echo 'Hello World'
-        
+          schema: major.minor.build        
       - run: | 
           echo ${{ github.events.inputs.version-type }}
-          echo ${{ steps.version-step.outputs.version.major }} ${{ steps.version-step.outputs.version.minor }} ${{ steps.version-step.outputs.version.build }}
+          NEW_VERSION=${{ github.events.inputs.version-type }}
           SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           
