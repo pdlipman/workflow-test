@@ -10,7 +10,7 @@ on:
           - Major
           - Minor
           - Patch
-        default: '- Minor'
+        default: 'Minor'
       version:
         description: 'New Version number'
         required: true
