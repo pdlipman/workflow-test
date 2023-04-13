@@ -57,6 +57,11 @@ jobs:
         run: |   
           NEW_VERSION=${{ steps.version-step.outputs.version }}
           NEW_BRANCH="PDL-v${NEW_VERSION}"
+          echo phil test begin
+          echo ${NEW_VERSION}
+          echo ${NEW_BRANCH}
+          echo ${BRANCH_NAME}
+          
           git push -u origin "${NEW_BRANCH}"
           gh pr create --fill --title "${NEW_BRANCH} -> ${BRANCH_NAME}" --head "${NEW_BRANCH}" --base "${BRANCH_NAME}" 
 
