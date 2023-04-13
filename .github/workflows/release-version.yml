@@ -38,9 +38,9 @@ jobs:
           schema: major.minor.build        
       - run: | 
           echo phil test begin
-          echo ${{ steps.extract_version.outputs.version }}
+          echo ${{ steps.version-step.outputs.version }}
           echo phil test end
-          NEW_VERSION=${{ steps.extract_version.outputs.version }}
+          NEW_VERSION=${{ steps.version-step.outputs.version }}
           SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           
