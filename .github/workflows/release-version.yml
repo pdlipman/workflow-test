@@ -32,7 +32,6 @@ jobs:
           git config --global user.name 'Philip Lipman'
           git config --global user.email 'philip.lipman@gmail.com'
           git checkout -b $NEW_BRANCH
-          yarn package
         
           git push -u origin "${NEW_BRANCH}"
           gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
