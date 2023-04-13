@@ -53,10 +53,8 @@ jobs:
           git config --global user.email 'philip.lipman@gmail.com'
           git checkout -b ${NEW_BRANCH}
        
-      - if: github.event.inputs.version-type == 'Minor'
-        run: yarn version --minor 
-        
-      - run: |   
+      - if: github.event.inputs.version-type == 'Minor'        
+        run: |   
           NEW_VERSION=${{ steps.version-step.outputs.version }}
           SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
