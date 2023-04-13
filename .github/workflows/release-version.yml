@@ -58,5 +58,5 @@ jobs:
           NEW_VERSION=${{ steps.version-step.outputs.version }}
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           git push -u origin "${NEW_BRANCH}"
-          gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${BRANCH_NAME}" 
+          gh pr create --fill --title "${NEW_BRANCH} -> ${BRANCH_NAME}" --head "${NEW_BRANCH}" --base "${BRANCH_NAME}" 
 
