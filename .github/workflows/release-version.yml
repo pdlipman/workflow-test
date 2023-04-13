@@ -28,10 +28,20 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
+      - name: Extract version
+        id: version-step
+        uses: michmich112/extract-version@main
+        with:
+          # specify here the path to your version file (e.g. package.json, pom.xml...)
+          version-file: "./package.json"
+          schema: major.minor.build
       - run: gh config set prompt disabled
+      - if: ${{ github.event.inputs.version-type == 'Minor' }}
+        run: echo ${{ major }} ${{ minor }} ${{ build }}
+        
+        
       - run: | 
           SOURCE=$(git branch --show-current)
-          export NEW_VERSION="${{ github.event.inputs.version }}"
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           
           yarn || exit 1
