@@ -55,6 +55,7 @@ jobs:
        
       - if: github.event.inputs.version-type == 'Minor'        
         run: |   
+          yarn version --minor
           NEW_VERSION=${{ steps.version-step.outputs.version }}
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           echo phil test begin
