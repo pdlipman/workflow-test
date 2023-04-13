@@ -34,7 +34,7 @@ jobs:
           schema: major.minor.build
       - run: gh config set prompt disabled
       - if: ${{ github.event.inputs.version-type == 'Minor' }}
-        run: echo ${{ major }} ${{ minor }} ${{ build }}
+        run: echo ${{ steps.version-step.outputs.version.major }} ${{ steps.version-step.outputs.version.minor }} ${{ steps.version-step.outputs.version.build }}
         
         
       - run: | 
