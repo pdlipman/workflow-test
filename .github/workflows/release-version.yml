@@ -1,0 +1,40 @@
+name: release-version
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New Version number'
+        required: true
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+env
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+        with:
+          fetch-deptch: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - run: gh config set prompt disabled
+      - run: |
+        SOURCE=$(git branch --show-current)
+        export NEW_VERSION="${{ github.events.inputs.version }}"
+        NEW_BRANCH="PDL-v$(NEW_VERSION)"
+        
+        yarn || exit 1
+        yarn build || exit 1
+        
+        npm set //npm.pkg.github.com/:_authToken $GITHUB_TOKEN
+        git config --global user.name 'Philip Lipman'
+        git config --global user.email 'philip.lipman@gmail.com'
+        git checkout -b $NEW_BRANCH
+        yarn package
+        
+        git push -u origin "${NEW_BRANCH}"
+        gh pr create --fill --title "${NEW_BRANCH} -> ${SOURCE}" --head "${NEW_BRANCH}" --base "${SOURCE}" 
