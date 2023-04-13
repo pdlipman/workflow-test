@@ -33,11 +33,12 @@ jobs:
           version-file: "./package.json"
           schema: major.minor.build
       - run: gh config set prompt disabled
-      - if: ${{ github.event.inputs.version-type == 'Minor' }}
-        run: echo ${{ steps.version-step.outputs.version.major }} ${{ steps.version-step.outputs.version.minor }} ${{ steps.version-step.outputs.version.build }}
-        
+      - if: github.event.inputs.version-type == 'Minor'
+        run: echo 'Hello World'
         
       - run: | 
+          echo ${{ github.events.inputs.version-type }}
+          echo ${{ steps.version-step.outputs.version.major }} ${{ steps.version-step.outputs.version.minor }} ${{ steps.version-step.outputs.version.build }}
           SOURCE=$(git branch --show-current)
           NEW_BRANCH="PDL-v${NEW_VERSION}"
           
